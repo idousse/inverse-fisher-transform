@@ -4,7 +4,7 @@ John Ehlers introduced the **Elegant Oscillator** (TASC, Feb 2022), built on the
 **Inverse Fisher Transform** of a normalised price derivative and smoothed by his
 two-pole SuperSmoother. [The Financial Hacker](https://financial-hacker.com/the-inverse-fisher-transform/)
 tested it as a mean-reversion signal on SPY and reported **5 of 7 winning trades,
-profit factor above 6** — over a single 14-month window (Mar 2020 – May 2021).
+profit factor above 6** , over a single 14-month window (Mar 2020 – May 2021).
 
 Seven trades on one hand-picked window is not evidence. This project reimplements
 the indicator from Ehlers' C/Zorro code in plain Python and asks the question the
