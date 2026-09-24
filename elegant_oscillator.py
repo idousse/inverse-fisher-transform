@@ -370,7 +370,7 @@ def save_equity_plot(symbol: str, out_dir, cost_bps: float = 0.0):
             label=f"Buy & hold {symbol} (Sharpe {sharpe(bh):.2f})")
     ax.set_yscale("log")
     ax.set_ylabel("Equity ($, log scale)")
-    ax.set_title(f"Elegant Oscillator vs buy & hold — {symbol}, {cost_bps:g} bps/side")
+    ax.set_title(f"Elegant Oscillator vs buy & hold: {symbol}, {cost_bps:g} bps/side")
     ax.grid(True, which="both", alpha=0.2)
     ax.legend()
     fig.tight_layout()

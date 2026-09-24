@@ -4,7 +4,7 @@ John Ehlers introduced the **Elegant Oscillator** (TASC, Feb 2022), built on the
 **Inverse Fisher Transform** of a normalised price derivative and smoothed by his
 two-pole SuperSmoother. [The Financial Hacker](https://financial-hacker.com/the-inverse-fisher-transform/)
 tested it as a mean-reversion signal on SPY and reported **5 of 7 winning trades,
-profit factor above 6** , over a single 14-month window (Mar 2020 – May 2021).
+profit factor above 6**, over a single 14-month window (Mar 2020 – May 2021).
 
 Seven trades on one hand-picked window is not evidence. This project reimplements
 the indicator from Ehlers' C/Zorro code in plain Python and asks the question the
@@ -12,7 +12,7 @@ original skips: **is there a repeatable edge once you stop cherry-picking?** Ful
 history, three liquid ETFs, transaction costs, and an explicit account of the one
 rule the source leaves undefined.
 
-**Verdict: no.** The signal is faithfully reproduced but does not generalise —
+**Verdict: no.** The signal is faithfully reproduced but does not generalise:
 negative return and Sharpe on every instrument over full history, far below
 buy-and-hold, and it is not a cost problem.
 
@@ -20,10 +20,10 @@ buy-and-hold, and it is not a cost problem.
 
 Translated directly from Ehlers' published code:
 
-- **Inverse Fisher Transform** `(e^{2x} − 1) / (e^{2x} + 1)` — squashes an
+- **Inverse Fisher Transform** `(e^{2x} − 1) / (e^{2x} + 1)`: squashes an
   unbounded input into (−1, 1), sharpening extremes (it is `tanh`).
-- **SuperSmoother** — a two-pole Butterworth low-pass filter, low lag.
-- **Elegant Oscillator** — normalise a 2-bar price derivative by its rolling RMS,
+- **SuperSmoother**: a two-pole Butterworth low-pass filter, low lag.
+- **Elegant Oscillator**: normalise a 2-bar price derivative by its rolling RMS,
   push it through the Inverse Fisher Transform, then SuperSmooth it:
 
 ```
@@ -42,11 +42,11 @@ down → short); a **valley below −0.5** means over-extended down (→ long).
 The published Zorro code calls `enterLong()` / `enterShort()` with **no exit
 rule**. On multi-year data that degenerates: the 2020–21 window has **seven peaks
 and zero valleys**, so a literal stop-and-reverse system just stays short a rising
-market, resulting in one trade, a −96% drawdown, and a meaningless test.
+market: one trade, a −96% drawdown, and a meaningless test.
 
 A signal with no exit is not a strategy. The default here is to **close when the
 oscillator reverts back through zero**, staying flat between trades. **The exit is
-ours, not Ehlers'** — so the verdict must not depend on it. It is also why the
+ours, not Ehlers'**, so the verdict must not depend on it. It is also why the
 trade counts here (6 in the window) match the article's seven signals while the
 outcome does not.
 
@@ -57,7 +57,7 @@ of 3 / 5 / 10 bars, and ride-to-the-opposite-band.
 ![Exit-rule sensitivity](Results/exit_sensitivity.png)
 
 The verdict holds: **14 of the 15 instrument × exit combinations post a negative
-Sharpe**, and the single exception — IWM on a 3-bar hold, Sharpe **0.10** — is
+Sharpe**, and the single exception, IWM on a 3-bar hold, Sharpe **0.10**, is
 noise next to buy-and-hold's 0.44. There is no exit rule that turns this signal
 into a usable edge, so the "no edge" conclusion is not an artifact of the one we
 picked.
@@ -84,8 +84,8 @@ tiny sample.
 | IWM | **-1.4%** | **-0.08** | -47% | 16% | 62% | 84 | +7.9% | 0.44 |
 
 Every instrument loses money and posts a negative Sharpe, against a buy-and-hold
-that compounds at ~8–10% a year. Note the **win rate is above 50%** everywhere —
-the signal is better than a coin flip on *direction* — yet it still loses, because
+that compounds at ~8–10% a year. Note the **win rate is above 50%** everywhere;
+the signal is better than a coin flip on *direction*, yet it still loses, because
 the payoff is asymmetric: wins are cut at the zero-cross while losers run.
 
 ![Elegant Oscillator vs buy & hold, SPY](Results/equity_SPY.png)
@@ -101,11 +101,11 @@ the payoff is asymmetric: wins are cut at the zero-cross while losers run.
 | 10 bps | -1.4% | -0.12 | 108 |
 
 Turnover is low, so costs barely move the result. The strategy is unprofitable at
-**zero** cost — the problem is the absence of an edge, not friction.
+**zero** cost: the problem is the absence of an edge, not friction.
 
 ## Conclusion
 
-The Elegant Oscillator is a well-constructed *indicator* — the DSP is sound and
+The Elegant Oscillator is a well-constructed *indicator*: the DSP is sound and
 the reproduction is faithful. But as a standalone mean-reversion *signal* it has
 no edge on broad US equity ETFs: negative expectancy over 25–31 years on three
 instruments, comfortably beaten by doing nothing. The published "profit factor
